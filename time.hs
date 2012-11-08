@@ -1,5 +1,8 @@
 
-module Time (timeToSeconds) where
+module Time (
+  timeToSeconds,
+  secondsToTime
+) where
 
 -- Time to Seconds
 parseDigit :: [Char] -> [Char] -> Char -> ([Char], [Char])
