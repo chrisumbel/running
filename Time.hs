@@ -14,8 +14,9 @@ parseDigit time digits current =
 parseSegment :: ([Char], [Char]) -> ([Char], Int)
 parseSegment (time, segment) = (time, (read segment))
 
-parseSegment' :: [Char] -> ([Char], Int)
-parseSegment' time = parseSegment (parseDigit (init time) "" (last time))
+-- TODO: return Nothing on parse fail
+parseSegment' :: [Char] -> Maybe ([Char], Int)
+parseSegment' time = Just (parseSegment (parseDigit (init time) "" (last time)))
 
 depthMultiplier :: Int -> Int
 depthMultiplier depth
@@ -24,13 +25,18 @@ depthMultiplier depth
   | depth  > 3  = 0   -- we don't support it, wipe the result out 
   | otherwise	= 60
 
-timeSegmentsToSeconds :: ([Char], Int) -> Int -> Int
-timeSegmentsToSeconds ("", seconds) depth = seconds
-timeSegmentsToSeconds (time, seconds) depth = 
-  seconds + ((timeSegmentsToSeconds (parseSegment' time) (depth + 1)) * 
-    (depthMultiplier depth))
+timeSegmentsToSeconds :: ([Char], Int) -> Int -> Maybe Int
+timeSegmentsToSeconds ("", seconds) depth = Just seconds
+timeSegmentsToSeconds (time, seconds) depth =
+  let segmentTime = parseSegment' time
+  in case segmentTime of
+       Just segmentTime ->
+         case timeSegmentsToSeconds segmentTime (depth + 1) of
+    	          Just n -> Just (seconds + n * (depthMultiplier depth))
+                  Nothing -> Nothing
+       Nothing -> Nothing
 
-timeToSeconds :: [Char] -> Int
+timeToSeconds :: [Char] -> Maybe Int
 timeToSeconds time = timeSegmentsToSeconds (time, 0) 0 
 
 -- Seconds to Time
