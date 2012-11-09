@@ -21,7 +21,7 @@ source-repository head
 
 library
   build-depends:     base
-  exposed-modules:   Time1
+  exposed-modules:   Time
 
 -- detailed-0.9 problem integrating with HUnit?
 test-suite test

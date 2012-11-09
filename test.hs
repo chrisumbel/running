@@ -12,7 +12,7 @@ import Test.Framework.Providers.QuickCheck2 (testProperty)
 
 import Control.Monad
 
-import qualified Time1 as T
+import qualified Time as T
 
 main = $(defaultMainGenerator)
 
