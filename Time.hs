@@ -4,7 +4,14 @@ module Time (
   secondsToTime
 ) where
 
--- Time to Seconds
+{------------------------------------------------------------------------------
+  Time to Seconds
+  ----------------------------------------------------------------------------}
+
+{-
+  recursively extract a digit out of a time string and append it to a
+  segment's string for later conversion
+-}  
 parseDigit :: [Char] -> [Char] -> Char -> ([Char], [Char])
 parseDigit "" digits current = ("", ([current] ++ digits))
 parseDigit time digits ':' = (time, digits)
@@ -12,9 +19,18 @@ parseDigit time digits current =
   parseDigit (init time) ([current] ++ digits) (last time)
 
 
+{-
+  destructure parseDigit result and convert the current segment's
+  string of digits to an Int
+-}
 parseSegment :: ([Char], [Char]) -> ([Char], Int)
 parseSegment (time, segment) = (time, (read segment))
 
+{-
+  parse one segment of the users time string out returning the rest
+  of the time string and the current segment as an Int i.e.
+  "12:34:56" -> Just ("12:34", 56)
+-}
 -- TODO: return Nothing on parse fail
 parseSegment' :: [Char] -> Maybe ([Char], Int)
 parseSegment' time = Just (parseSegment (parseDigit (init time) "" (last time)))
@@ -58,7 +74,9 @@ timeSegmentsToSeconds (time, seconds) depth =
 timeToSeconds :: [Char] -> Maybe Int
 timeToSeconds time = timeSegmentsToSeconds (time, 0) 0 
 
--- Seconds to Time
+{------------------------------------------------------------------------------
+  Seconds to Time
+  ----------------------------------------------------------------------------}
 lead :: Int -> [Char]
 lead n
   | n < 10     = "0"
