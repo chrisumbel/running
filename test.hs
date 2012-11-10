@@ -19,11 +19,17 @@ main = $(defaultMainGenerator)
 -- Basic HUnit tests
 
 -- timeToSeconds success
-case_timeToSeconds_00_00_00 =
-  T.timeToSeconds "0:00:00" @?= Just 0
+case_timeToSeconds_12 =
+  T.timeToSeconds "12" @?= Just 12
+
+case_timeToSeconds_12_34 =
+  T.timeToSeconds "12:34" @?= Just 754
 
 case_timeToSeconds_12_34_56 =
   T.timeToSeconds "12:34:56" @?= Just 45296
+
+case_timeToSeconds_00_00_00 =
+  T.timeToSeconds "0:00:00" @?= Just 0
 
 -- timeToSeconds failure
 case_timeToSeconds_bad_chars =
