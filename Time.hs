@@ -79,21 +79,30 @@ timeToSeconds time = timeSegmentsToSeconds (time, 0) 0
 {------------------------------------------------------------------------------
   Seconds to Time
   ----------------------------------------------------------------------------}
-lead :: Int -> [Char]
-lead n
-  | n < 10     = "0"
-  | otherwise  = ""
 
-show' :: Int -> [Char]
-show' n = (lead n) ++ (show n)
+{-
+  format a segment of time with leading zeros if necessary
+-}
+formatSegment :: Int -> [Char]
+formatSegment n
+  | n < 10     = '0' : show n
+  | otherwise  = show n
 
-generateSegment :: Int -> Int -> [Char]
-generateSegment seconds depth
-  | depth == 0 = (generateSegment seconds 1) ++ (show' (seconds `mod` 60))
-  | depth  < 3 = (generateSegment seconds (depth + 1)) ++ 
-    show' ((seconds `div` (60 ^ depth)) `mod` (60 ^ depth)) ++ ":"
+{-
+  recusively create a formatted string of time segments
+-}
+generateSegments :: Int -> Int -> [Char]
+generateSegments seconds depth
+  | depth == 0 = (generateSegments seconds 1) ++ (formatSegment (seconds `mod` 60))
+  | depth  < 3 = (generateSegments seconds (depth + 1)) ++ 
+    formatSegment ((seconds `div` (60 ^ depth)) `mod` (60 ^ depth)) ++ ":"
   | otherwise = ""
 
+{-
+  API Entry Point
+
+  convert an Int number of seconds to a formatted time string
+-}
 secondsToTime :: Int -> [Char]
 secondsToTime seconds = 
-  generateSegment seconds 0 
+  generateSegments seconds 0 
