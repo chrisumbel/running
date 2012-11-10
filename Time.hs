@@ -31,7 +31,6 @@ parseSegment (time, segment) = (time, (read segment))
   of the time string and the current segment as an Int i.e.
   "12:34:56" -> Just ("12:34", 56)
 -}
--- TODO: return Nothing on parse fail
 parseSegment' :: [Char] -> Maybe ([Char], Int)
 parseSegment' time = 
   case parseDigits (init time) "" (last time) of 
