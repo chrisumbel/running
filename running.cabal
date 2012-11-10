@@ -6,7 +6,7 @@ homepage:            http://github.com/FranklinChen/running
 bug-reports:         http://github.com/FranklinChen/running/issues
 license:             BSD3
 license-file:        LICENSE
-copyright:           (c) 2012 Franklin Chen
+copyright:           (c) 2012 Franklin Chen, Chris Umbel
 author:              Franklin Chen <franklinchen@franklinchen.com>
 maintainer:          franklinchen@franklinchen.com
 category:            Math

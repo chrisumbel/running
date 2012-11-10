@@ -30,7 +30,7 @@ case_timeToSeconds_bad_chars =
   T.timeToSeconds "0:x0:59" @?= Nothing
 
 {- 
--- NOT YET CONVINCED I WANT THESE TO FAIL
+-- NOT YET CONVINCED I WANT THESE TO PASS
 
 -- case_timeToSeconds_single_second_digit =
   T.timeToSeconds "0:00:8" @?= Nothing
