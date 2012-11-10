@@ -17,7 +17,7 @@ extra-source-files:  .gitignore,
 
 source-repository head
   type:              git
-  location:          http://github.com/FranklinChen/running.git
+  location:          http://github.com/chrisumbel/running.git
 
 library
   build-depends:     base
