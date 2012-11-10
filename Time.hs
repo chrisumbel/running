@@ -37,7 +37,7 @@ parseSegment' time =
   case parseDigit (init time) "" (last time) of 
     Just (time, segment) -> Just (parseSegment (time, segment))
     otherwise -> Nothing
-    
+
 {-
   determine how many seconds a singe unit in a given section of time
   represents. i.e. if it's the minutes section that's being parsed 
@@ -61,12 +61,11 @@ timeSegmentsToSeconds ("", seconds) depth = Just seconds
 timeSegmentsToSeconds (time, seconds) depth =
   let segmentTime = parseSegment' time
   in case segmentTime of
-       Just segmentTime ->
-         case timeSegmentsToSeconds segmentTime (depth + 1) of
-    	          Just n -> Just (seconds + n * (depthMultiplier depth))
-                  Nothing -> Nothing
-       Nothing -> Nothing
-
+      Just segmentTime ->
+        case timeSegmentsToSeconds segmentTime (depth + 1) of
+          Just n -> Just (seconds + n * (depthMultiplier depth))
+          Nothing -> Nothing
+      Nothing -> Nothing
 
 {-
   API Entry point
