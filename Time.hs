@@ -12,12 +12,12 @@ module Time (
   recursively extract a digit out of a time string and append it to a
   segment's string for later conversion
 -}  
-parseDigit :: [Char] -> [Char] -> Char -> ([Char], [Char])
-parseDigit "" digits current = ("", ([current] ++ digits))
-parseDigit time digits ':' = (time, digits)
-parseDigit time digits current = 
-  parseDigit (init time) ([current] ++ digits) (last time)
-
+parseDigit :: [Char] -> [Char] -> Char -> Maybe ([Char], [Char])
+parseDigit "" digits current = Just ("", ([current] ++ digits))
+parseDigit time digits ':' = Just (time, digits)
+parseDigit time digits current 
+  | current `elem` ['0'..'9'] = parseDigit (init time) ([current] ++ digits) (last time)
+  | otherwise = Nothing
 
 {-
   destructure parseDigit result and convert the current segment's
@@ -33,8 +33,11 @@ parseSegment (time, segment) = (time, (read segment))
 -}
 -- TODO: return Nothing on parse fail
 parseSegment' :: [Char] -> Maybe ([Char], Int)
-parseSegment' time = Just (parseSegment (parseDigit (init time) "" (last time)))
-
+parseSegment' time = 
+  case parseDigit (init time) "" (last time) of 
+    Just (time, segment) -> Just (parseSegment (time, segment))
+    otherwise -> Nothing
+    
 {-
   determine how many seconds a singe unit in a given section of time
   represents. i.e. if it's the minutes section that's being parsed 
